@@ -32,6 +32,7 @@ local UnitDBToUnitPrettyName = {
 }
 
 local AnchorPoints = { { ["TOPLEFT"] = "Top Left", ["TOP"] = "Top", ["TOPRIGHT"] = "Top Right", ["LEFT"] = "Left", ["CENTER"] = "Center", ["RIGHT"] = "Right", ["BOTTOMLEFT"] = "Bottom Left", ["BOTTOM"] = "Bottom", ["BOTTOMRIGHT"] = "Bottom Right" }, { "TOPLEFT", "TOP", "TOPRIGHT", "LEFT", "CENTER", "RIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT", } }
+local FrameStrataList = {{ ["BACKGROUND"] = "Background", ["LOW"] = "Low", ["MEDIUM"] = "Medium", ["HIGH"] = "High", ["DIALOG"] = "Dialog", ["FULLSCREEN"] = "Fullscreen", ["FULLSCREEN_DIALOG"] = "Fullscreen Dialog", ["TOOLTIP"] = "Tooltip" }, { "BACKGROUND", "LOW", "MEDIUM", "HIGH", "DIALOG", "FULLSCREEN", "FULLSCREEN_DIALOG", "TOOLTIP" }}
 
 local Orientations = {
     { ["HORIZONTAL"] = "Horizontal", ["VERTICAL"] = "Vertical", },
@@ -500,7 +501,7 @@ local function CreateFrameSettings(containerParent, unit, unitHasParent, updateC
     XPosSlider:SetLabel("X Position")
     XPosSlider:SetValue(FrameDB.Layout[3])
     XPosSlider:SetSliderValues(-1000, 1000, 0.1)
-    XPosSlider:SetRelativeWidth(unit == "boss" and 0.33 or 0.5)
+    XPosSlider:SetRelativeWidth(unit == "boss" and 0.25 or 0.33)
     XPosSlider:SetCallback("OnValueChanged", function(_, _, value) FrameDB.Layout[3] = value updateCallback() end)
     LayoutContainer:AddChild(XPosSlider)
 
@@ -508,7 +509,7 @@ local function CreateFrameSettings(containerParent, unit, unitHasParent, updateC
     YPosSlider:SetLabel("Y Position")
     YPosSlider:SetValue(FrameDB.Layout[4])
     YPosSlider:SetSliderValues(-1000, 1000, 0.1)
-    YPosSlider:SetRelativeWidth(unit == "boss" and 0.33 or 0.5)
+    YPosSlider:SetRelativeWidth(unit == "boss" and 0.25 or 0.33)
     YPosSlider:SetCallback("OnValueChanged", function(_, _, value) FrameDB.Layout[4] = value updateCallback() end)
     LayoutContainer:AddChild(YPosSlider)
 
@@ -521,6 +522,14 @@ local function CreateFrameSettings(containerParent, unit, unitHasParent, updateC
         SpacingSlider:SetCallback("OnValueChanged", function(_, _, value) FrameDB.Layout[5] = value updateCallback() end)
         LayoutContainer:AddChild(SpacingSlider)
     end
+
+    local FrameStrataDropdown = AG:Create("Dropdown")
+    FrameStrataDropdown:SetList(FrameStrataList[1], FrameStrataList[2])
+    FrameStrataDropdown:SetLabel("Frame Strata")
+    FrameStrataDropdown:SetValue(FrameDB.FrameStrata)
+    FrameStrataDropdown:SetRelativeWidth(unit == "boss" and 0.25 or 0.33)
+    FrameStrataDropdown:SetCallback("OnValueChanged", function(_, _, value) FrameDB.FrameStrata = value updateCallback() end)
+    LayoutContainer:AddChild(FrameStrataDropdown)
 
     local ColourContainer = GUIWidgets.CreateInlineGroup(containerParent, "Colours & Toggles")
 
@@ -779,7 +788,7 @@ local function CreateCastBarBarSettings(containerParent, unit, updateCallback)
     XPosSlider:SetLabel("X Position")
     XPosSlider:SetValue(CastBarDB.Layout[3])
     XPosSlider:SetSliderValues(-1000, 1000, 0.1)
-    XPosSlider:SetRelativeWidth(0.5)
+    XPosSlider:SetRelativeWidth(0.33)
     XPosSlider:SetCallback("OnValueChanged", function(_, _, value) CastBarDB.Layout[3] = value updateCallback() end)
     LayoutContainer:AddChild(XPosSlider)
 
@@ -787,9 +796,17 @@ local function CreateCastBarBarSettings(containerParent, unit, updateCallback)
     YPosSlider:SetLabel("Y Position")
     YPosSlider:SetValue(CastBarDB.Layout[4])
     YPosSlider:SetSliderValues(-1000, 1000, 0.1)
-    YPosSlider:SetRelativeWidth(0.5)
+    YPosSlider:SetRelativeWidth(0.33)
     YPosSlider:SetCallback("OnValueChanged", function(_, _, value) CastBarDB.Layout[4] = value updateCallback() end)
     LayoutContainer:AddChild(YPosSlider)
+
+    local FrameStrataDropdown = AG:Create("Dropdown")
+    FrameStrataDropdown:SetList(FrameStrataList[1], FrameStrataList[2])
+    FrameStrataDropdown:SetLabel("Frame Strata")
+    FrameStrataDropdown:SetValue(CastBarDB.FrameStrata)
+    FrameStrataDropdown:SetRelativeWidth(0.33)
+    FrameStrataDropdown:SetCallback("OnValueChanged", function(_, _, value) CastBarDB.FrameStrata = value updateCallback() end)
+    LayoutContainer:AddChild(FrameStrataDropdown)
 
     local ColourContainer = GUIWidgets.CreateInlineGroup(containerParent, "Colours & Toggles")
 
@@ -922,7 +939,7 @@ local function CreateCastBarSpellNameTextSettings(containerParent, unit, updateC
     SpellNameXPosSlider:SetLabel("X Position")
     SpellNameXPosSlider:SetValue(SpellNameTextDB.Layout[3])
     SpellNameXPosSlider:SetSliderValues(-1000, 1000, 0.1)
-    SpellNameXPosSlider:SetRelativeWidth(0.33)
+    SpellNameXPosSlider:SetRelativeWidth(0.25)
     SpellNameXPosSlider:SetCallback("OnValueChanged", function(_, _, value) SpellNameTextDB.Layout[3] = value updateCallback() end)
     SpellNameLayoutContainer:AddChild(SpellNameXPosSlider)
 
@@ -930,7 +947,7 @@ local function CreateCastBarSpellNameTextSettings(containerParent, unit, updateC
     SpellNameYPosSlider:SetLabel("Y Position")
     SpellNameYPosSlider:SetValue(SpellNameTextDB.Layout[4])
     SpellNameYPosSlider:SetSliderValues(-1000, 1000, 0.1)
-    SpellNameYPosSlider:SetRelativeWidth(0.33)
+    SpellNameYPosSlider:SetRelativeWidth(0.25)
     SpellNameYPosSlider:SetCallback("OnValueChanged", function(_, _, value) SpellNameTextDB.Layout[4] = value updateCallback() end)
     SpellNameLayoutContainer:AddChild(SpellNameYPosSlider)
 
@@ -938,9 +955,17 @@ local function CreateCastBarSpellNameTextSettings(containerParent, unit, updateC
     SpellNameFontSizeSlider:SetLabel("Font Size")
     SpellNameFontSizeSlider:SetValue(SpellNameTextDB.FontSize)
     SpellNameFontSizeSlider:SetSliderValues(8, 64, 1)
-    SpellNameFontSizeSlider:SetRelativeWidth(0.33)
+    SpellNameFontSizeSlider:SetRelativeWidth(0.25)
     SpellNameFontSizeSlider:SetCallback("OnValueChanged", function(_, _, value) SpellNameTextDB.FontSize = value updateCallback() end)
     SpellNameLayoutContainer:AddChild(SpellNameFontSizeSlider)
+
+    local MaxCharsSlider = AG:Create("Slider")
+    MaxCharsSlider:SetLabel("Max Characters")
+    MaxCharsSlider:SetValue(SpellNameTextDB.MaxChars)
+    MaxCharsSlider:SetSliderValues(1, 64, 1)
+    MaxCharsSlider:SetRelativeWidth(0.25)
+    MaxCharsSlider:SetCallback("OnValueChanged", function(_, _, value) SpellNameTextDB.MaxChars = value updateCallback() end)
+    SpellNameLayoutContainer:AddChild(MaxCharsSlider)
 
     function RefreshCastBarSpellNameSettings()
         if SpellNameTextDB.Enabled then
@@ -950,6 +975,7 @@ local function CreateCastBarSpellNameTextSettings(containerParent, unit, updateC
             SpellNameYPosSlider:SetDisabled(false)
             SpellNameFontSizeSlider:SetDisabled(false)
             SpellNameColourPicker:SetDisabled(false)
+            MaxCharsSlider:SetDisabled(false)
         else
             SpellNameAnchorFromDropdown:SetDisabled(true)
             SpellNameAnchorToDropdown:SetDisabled(true)
@@ -957,6 +983,7 @@ local function CreateCastBarSpellNameTextSettings(containerParent, unit, updateC
             SpellNameYPosSlider:SetDisabled(true)
             SpellNameFontSizeSlider:SetDisabled(true)
             SpellNameColourPicker:SetDisabled(true)
+            MaxCharsSlider:SetDisabled(true)
         end
     end
 
@@ -1794,7 +1821,7 @@ local function CreateTagSetting(containerParent, unit, tagDB)
     LayoutContainer:AddChild(FontSizeSlider)
 
     local TagSelectionContainer = GUIWidgets.CreateInlineGroup(containerParent, "Tag Selection")
-    GUIWidgets.CreateInformationTag(TagSelectionContainer, "You can use the dropdowns below to quickly add tags.")
+    GUIWidgets.CreateInformationTag(TagSelectionContainer, "You can use the dropdowns below to quickly add tags.\n|cFF8080FFPrefix|r indicates that this should be added to the start of the tag string.")
 
     local HealthTagDropdown = AG:Create("Dropdown")
     HealthTagDropdown:SetList(UUF:FetchTagData("Health")[1], UUF:FetchTagData("Health")[2])
@@ -2036,6 +2063,7 @@ local function CreateSpecificAuraSettings(containerParent, unit, auraDB)
 end
 
 local function CreateAuraSettings(containerParent, unit)
+    local AurasDB = UUF.db.profile.Units[unit].Auras
     local AuraDurationContainer = GUIWidgets.CreateInlineGroup(containerParent, "Aura Duration Settings")
 
     local ColourPicker = AG:Create("ColorPicker")
@@ -2093,6 +2121,14 @@ local function CreateAuraSettings(containerParent, unit)
     FontSizeSlider:SetCallback("OnValueChanged", function(_, _, value) UUF.db.profile.Units[unit].Auras.AuraDuration.FontSize = value if unit == "boss" then UUF:UpdateBossFrames() else UUF:UpdateUnitAuras(UUF[unit:upper()], unit, "AuraDuration") end end)
     FontSizeSlider:SetDisabled(UUF.db.profile.Units[unit].Auras.AuraDuration.ScaleByIconSize)
     AuraDurationContainer:AddChild(FontSizeSlider)
+
+    local FrameStrataDropdown = AG:Create("Dropdown")
+    FrameStrataDropdown:SetList(FrameStrataList[1], FrameStrataList[2])
+    FrameStrataDropdown:SetLabel("Frame Strata")
+    FrameStrataDropdown:SetValue(AurasDB.FrameStrata)
+    FrameStrataDropdown:SetRelativeWidth(1)
+    FrameStrataDropdown:SetCallback("OnValueChanged", function(_, _, value) AurasDB.FrameStrata = value UUF:UpdateUnitAurasStrata(unit) end)
+    containerParent:AddChild(FrameStrataDropdown)
 
     function RefreshFontSizeSlider()
         if UUF.db.profile.Units[unit].Auras.AuraDuration.ScaleByIconSize then
@@ -2250,14 +2286,6 @@ local function CreateGlobalSettings(containerParent)
     SeparatorDropdown:SetCallback("OnEnter", function() GameTooltip:SetOwner(SeparatorDropdown.frame, "ANCHOR_BOTTOM") GameTooltip:AddLine("The separator chosen here is only applied to custom tags which are combined. Such as |cFF8080FF[curhpperhp]|r or |cFF8080FF[curhpperhp:abbr]|r", 1, 1, 1) GameTooltip:Show() end)
     SeparatorDropdown:SetCallback("OnLeave", function() GameTooltip:Hide() end)
     TagContainer:AddChild(SeparatorDropdown)
-
-    -- local ToTSeparatorDropdown = AG:Create("Dropdown")
-    -- ToTSeparatorDropdown:SetList(UUF.TOT_SEPARATOR_TAGS[1], UUF.TOT_SEPARATOR_TAGS[2])
-    -- ToTSeparatorDropdown:SetLabel("Target of Target Separator")
-    -- ToTSeparatorDropdown:SetValue(UUF.db.profile.General.ToTSeparator)
-    -- ToTSeparatorDropdown:SetRelativeWidth(0.25)
-    -- ToTSeparatorDropdown:SetCallback("OnValueChanged", function(_, _, value) UUF.db.profile.General.ToTSeparator = value UUF:UpdateUnitTags() end)
-    -- TagContainer:AddChild(ToTSeparatorDropdown)
 
     containerParent:DoLayout()
 end
