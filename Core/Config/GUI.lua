@@ -33,6 +33,11 @@ local UnitDBToUnitPrettyName = {
 
 local AnchorPoints = { { ["TOPLEFT"] = "Top Left", ["TOP"] = "Top", ["TOPRIGHT"] = "Top Right", ["LEFT"] = "Left", ["CENTER"] = "Center", ["RIGHT"] = "Right", ["BOTTOMLEFT"] = "Bottom Left", ["BOTTOM"] = "Bottom", ["BOTTOMRIGHT"] = "Bottom Right" }, { "TOPLEFT", "TOP", "TOPRIGHT", "LEFT", "CENTER", "RIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT", } }
 
+local Orientations = {
+    { ["HORIZONTAL"] = "Horizontal", ["VERTICAL"] = "Vertical", },
+    { "HORIZONTAL",                  "VERTICAL" }
+}
+
 local Power = {
     [0] = "Mana",
     [1] = "Rage",
@@ -472,6 +477,14 @@ local function CreateFrameSettings(containerParent, unit, unitHasParent, updateC
     AnchorToDropdown:SetRelativeWidth((unitHasParent or unit == "boss") and 0.33 or 0.5)
     AnchorToDropdown:SetCallback("OnValueChanged", function(_, _, value) FrameDB.Layout[2] = value updateCallback() end)
     LayoutContainer:AddChild(AnchorToDropdown)
+
+    local OrientationDropdown = AG:Create("Dropdown")
+    OrientationDropdown:SetList(Orientations[1], Orientations[2])
+    OrientationDropdown:SetLabel("Orientation")
+    OrientationDropdown:SetValue(FrameDB.Orientation)
+    OrientationDropdown:SetRelativeWidth(0.5)
+    OrientationDropdown:SetCallback("OnValueChanged", function(_, _, value) FrameDB.Orientation = value updateCallback() end)
+    LayoutContainer:AddChild(OrientationDropdown)
 
     if unit == "boss" then
         local GrowthDirectionDropdown = AG:Create("Dropdown")

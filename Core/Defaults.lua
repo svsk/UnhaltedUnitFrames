@@ -66,7 +66,8 @@ local Defaults = {
                 Frame = {
                     Width = 244,
                     Height = 42,
-                    Layout = {"CENTER", "CENTER", -425.1, -275.1}
+                    Layout = {"CENTER", "CENTER", -425.1, -275.1},
+                    Orientation = "HORIZONTAL"
                 },
                 HealthBar = {
                     ColourByClass = true,
@@ -260,7 +261,8 @@ local Defaults = {
                 Frame = {
                     Width = 244,
                     Height = 42,
-                    Layout = {"CENTER", "CENTER", 425.1, -275.1}
+                    Layout = {"CENTER", "CENTER", 425.1, -275.1},
+                    Orientation = "HORIZONTAL"
                 },
                 HealthBar = {
                     ColourByClass = true,
@@ -448,7 +450,8 @@ local Defaults = {
                     Width = 122,
                     Height = 22,
                     AnchorParent = "UUF_Target",
-                    Layout = {"TOPRIGHT", "BOTTOMRIGHT", 0, -26.1}
+                    Layout = {"TOPRIGHT", "BOTTOMRIGHT", 0, -26.1},
+                    Orientation = "HORIZONTAL"
                 },
                 HealthBar = {
                     ColourByClass = true,
@@ -619,7 +622,8 @@ local Defaults = {
                     Width = 122,
                     Height = 22,
                     AnchorParent = "UUF_Player",
-                    Layout = {"BOTTOMLEFT", "TOPLEFT", 0, 36.1}
+                    Layout = {"BOTTOMLEFT", "TOPLEFT", 0, 36.1},
+                    Orientation = "HORIZONTAL"
                 },
                 HealthBar = {
                     ColourByClass = true,
@@ -791,7 +795,8 @@ local Defaults = {
                     Width = 122,
                     Height = 22,
                     AnchorParent = "UUF_Focus",
-                    Layout = {"LEFT", "RIGHT", 1, 0}
+                    Layout = {"LEFT", "RIGHT", 1, 0},
+                    Orientation = "HORIZONTAL"
                 },
                 HealthBar = {
                     ColourByClass = true,
@@ -962,7 +967,8 @@ local Defaults = {
                     Width = 122,
                     Height = 22,
                     AnchorParent = "UUF_Player",
-                    Layout = {"TOPLEFT", "BOTTOMLEFT", 0, -26.1}
+                    Layout = {"TOPLEFT", "BOTTOMLEFT", 0, -26.1},
+                    Orientation = "HORIZONTAL"
                 },
                 HealthBar = {
                     ColourByClass = true,
@@ -1135,6 +1141,7 @@ local Defaults = {
                     Height = 42,
                     Layout = {"CENTER", "CENTER", 550.1, -0.1, 26},
                     GrowthDirection = "DOWN",
+                    Orientation = "HORIZONTAL"
                 },
                 HealthBar = {
                     ColourByClass = true,
