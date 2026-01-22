@@ -13,6 +13,7 @@ function UUF:CreateUnitHealthBar(unitFrame, unit)
             unitFrame.HealthBackground:SetStatusBarTexture(UUF.Media.Background)
             unitFrame.HealthBackground:SetFrameLevel(unitContainer:GetFrameLevel() + 1)
             unitFrame.HealthBackground:SetStatusBarColor(HealthBarDB.Background[1], HealthBarDB.Background[2], HealthBarDB.Background[3], HealthBarDB.BackgroundOpacity)
+            unitFrame.HealthBackground:SetOrientation(FrameDB.Orientation)
         end
 
         local HealthBar = CreateFrame("StatusBar", UUF:FetchFrameName(unit) .. "_HealthBar", unitContainer)
@@ -21,6 +22,8 @@ function UUF:CreateUnitHealthBar(unitFrame, unit)
         HealthBar:SetStatusBarTexture(UUF.Media.Foreground)
         HealthBar:SetFrameLevel(unitContainer:GetFrameLevel() + 2)
         HealthBar:SetStatusBarColor(HealthBarDB.Foreground[1], HealthBarDB.Foreground[2], HealthBarDB.Foreground[3], HealthBarDB.ForegroundOpacity)
+        HealthBar:SetOrientation(FrameDB.Orientation)
+
         HealthBar.colorClass = HealthBarDB.ColourByClass
         HealthBar.colorReaction = HealthBarDB.ColourByClass
         HealthBar.colorTapped = HealthBarDB.ColourWhenTapped
@@ -87,6 +90,7 @@ function UUF:UpdateUnitHealthBar(unitFrame, unit)
         unitFrame.Health.colorReaction = HealthBarDB.ColourByClass
         unitFrame.Health.colorTapped = HealthBarDB.ColourWhenTapped
         unitFrame.Health:SetStatusBarTexture(UUF.Media.Foreground)
+        unitFrame.Health:SetOrientation(FrameDB.Orientation)
         if unit == "pet" and HealthBarDB.ColourByClass then
             unitFrame.Health.colorClass = false
             unitFrame.Health.colorReaction = false
@@ -103,6 +107,7 @@ function UUF:UpdateUnitHealthBar(unitFrame, unit)
         unitFrame.HealthBackground:SetSize(FrameDB.Width - 2, FrameDB.Height - 2)
         unitFrame.HealthBackground:SetStatusBarColor(HealthBarDB.Background[1], HealthBarDB.Background[2], HealthBarDB.Background[3], HealthBarDB.BackgroundOpacity)
         unitFrame.HealthBackground:SetStatusBarTexture(UUF.Media.Background)
+        unitFrame.HealthBackground:SetOrientation(FrameDB.Orientation)
     end
 
     if HealthBarDB.Inverse then
@@ -112,5 +117,6 @@ function UUF:UpdateUnitHealthBar(unitFrame, unit)
         unitFrame.Health:SetReverseFill(false)
         unitFrame.HealthBackground:SetReverseFill(true)
     end
+
     unitFrame.Health:ForceUpdate()
 end
