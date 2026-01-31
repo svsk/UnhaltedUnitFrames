@@ -390,30 +390,58 @@ function UUF:GetSecondaryPowerType()
 end
 
 function UUF:UpdateHealthBarLayout(unitFrame, unit)
+    local FrameDB = UUF.db.profile.Units[UUF:GetNormalizedUnit(unit)].Frame
     local PowerBarDB = UUF.db.profile.Units[UUF:GetNormalizedUnit(unit)].PowerBar
     local SecondaryPowerBarDB = UUF.db.profile.Units[UUF:GetNormalizedUnit(unit)].SecondaryPowerBar
+    local orientation = FrameDB.Orientation
 
-    local topOffset = -1
-    local bottomOffset = 1
+    if orientation == "VERTICAL" then
+        local leftOffset = 1
+        local rightOffset = -1
+        
+        local hasSecondaryPower =
+            SecondaryPowerBarDB
+            and SecondaryPowerBarDB.Enabled
+            and (unitFrame.Runes or unitFrame.ClassPower)
 
-    local hasSecondaryPower =
-        SecondaryPowerBarDB
-        and SecondaryPowerBarDB.Enabled
-        and (unitFrame.Runes or unitFrame.ClassPower)
+        if hasSecondaryPower then
+            leftOffset = leftOffset + SecondaryPowerBarDB.Height + 1
+        end
 
-    if hasSecondaryPower then
-        topOffset = topOffset - SecondaryPowerBarDB.Height - 1
+        if PowerBarDB and PowerBarDB.Enabled then
+            rightOffset = rightOffset - PowerBarDB.Height - 1
+        end
+
+        unitFrame.HealthBackground:ClearAllPoints()
+        unitFrame.HealthBackground:SetPoint("TOPLEFT", unitFrame.Container, "TOPLEFT", leftOffset, -1)
+        unitFrame.HealthBackground:SetPoint("BOTTOMRIGHT", unitFrame.Container, "BOTTOMRIGHT", rightOffset, 1)
+
+        unitFrame.Health:ClearAllPoints()
+        unitFrame.Health:SetPoint("TOPLEFT", unitFrame.Container, "TOPLEFT", leftOffset, -1)
+        unitFrame.Health:SetPoint("BOTTOMRIGHT", unitFrame.Container, "BOTTOMRIGHT", rightOffset, 1)
+    else
+        local topOffset = -1
+        local bottomOffset = 1
+
+        local hasSecondaryPower =
+            SecondaryPowerBarDB
+            and SecondaryPowerBarDB.Enabled
+            and (unitFrame.Runes or unitFrame.ClassPower)
+
+        if hasSecondaryPower then
+            topOffset = topOffset - SecondaryPowerBarDB.Height - 1
+        end
+
+        if PowerBarDB and PowerBarDB.Enabled then
+            bottomOffset = bottomOffset + PowerBarDB.Height + 1
+        end
+
+        unitFrame.HealthBackground:ClearAllPoints()
+        unitFrame.HealthBackground:SetPoint("TOPLEFT", unitFrame.Container, "TOPLEFT", 1, topOffset)
+        unitFrame.HealthBackground:SetPoint("BOTTOMRIGHT", unitFrame.Container, "BOTTOMRIGHT", -1, bottomOffset)
+
+        unitFrame.Health:ClearAllPoints()
+        unitFrame.Health:SetPoint("TOPLEFT", unitFrame.Container, "TOPLEFT", 1, topOffset)
+        unitFrame.Health:SetPoint("BOTTOMRIGHT", unitFrame.Container, "BOTTOMRIGHT", -1, bottomOffset)
     end
-
-    if PowerBarDB and PowerBarDB.Enabled then
-        bottomOffset = bottomOffset + PowerBarDB.Height + 1
-    end
-
-    unitFrame.HealthBackground:ClearAllPoints()
-    unitFrame.HealthBackground:SetPoint("TOPLEFT", unitFrame.Container, "TOPLEFT", 1, topOffset)
-    unitFrame.HealthBackground:SetPoint("BOTTOMRIGHT", unitFrame.Container, "BOTTOMRIGHT", -1, bottomOffset)
-
-    unitFrame.Health:ClearAllPoints()
-    unitFrame.Health:SetPoint("TOPLEFT", unitFrame.Container, "TOPLEFT", 1, topOffset)
-    unitFrame.Health:SetPoint("BOTTOMRIGHT", unitFrame.Container, "BOTTOMRIGHT", -1, bottomOffset)
 end

@@ -1208,8 +1208,14 @@ local function CreatePowerBarSettings(containerParent, unit, updateCallback)
     InverseGrowthDirectionToggle:SetRelativeWidth(0.33)
     LayoutContainer:AddChild(InverseGrowthDirectionToggle)
 
+    local HeightSliderLabel = "Height"
+
+    if FrameDB.Orientation == "VERTICAL" then
+        HeightSliderLabel = "Width"
+    end
+
     local HeightSlider = AG:Create("Slider")
-    HeightSlider:SetLabel("Height")
+    HeightSlider:SetLabel(HeightSliderLabel)
     HeightSlider:SetValue(PowerBarDB.Height)
     HeightSlider:SetSliderValues(1, FrameDB.Height - 2, 0.1)
     HeightSlider:SetRelativeWidth(0.33)
