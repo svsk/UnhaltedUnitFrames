@@ -585,23 +585,14 @@ local function CreateFrameSettings(containerParent, unit, unitHasParent, updateC
     ColourWhenTappedToggle:SetLabel("Colour When Tapped")
     ColourWhenTappedToggle:SetValue(HealthBarDB.ColourWhenTapped)
     ColourWhenTappedToggle:SetCallback("OnValueChanged", function(_, _, value) HealthBarDB.ColourWhenTapped = value updateCallback() end)
-    ColourWhenTappedToggle:SetRelativeWidth(((unit == "player" or unit == "target") and 0.25) or (unit ~= "focus" and 0.5) or 0.33)
+    ColourWhenTappedToggle:SetRelativeWidth((unit == "player" or unit == "target") and 0.33 or 0.5)
     ColourContainer:AddChild(ColourWhenTappedToggle)
-
-    if unit == "player" or unit == "target" or unit == "focus" then
-        local ColourByDispelTypeToggle = AG:Create("CheckBox")
-        ColourByDispelTypeToggle:SetLabel("Colour by Dispel Type")
-        ColourByDispelTypeToggle:SetValue(HealthBarDB.ColourByDispelType)
-        ColourByDispelTypeToggle:SetCallback("OnValueChanged", function(_, _, value) HealthBarDB.ColourByDispelType = value updateCallback() end)
-        ColourByDispelTypeToggle:SetRelativeWidth(((unit == "player" or unit == "target") and 0.25) or 0.33)
-        ColourContainer:AddChild(ColourByDispelTypeToggle)
-    end
 
     local InverseGrowthDirectionToggle = AG:Create("CheckBox")
     InverseGrowthDirectionToggle:SetLabel("Inverse Growth Direction")
     InverseGrowthDirectionToggle:SetValue(HealthBarDB.Inverse)
     InverseGrowthDirectionToggle:SetCallback("OnValueChanged", function(_, _, value) HealthBarDB.Inverse = value updateCallback() end)
-    InverseGrowthDirectionToggle:SetRelativeWidth(((unit == "player" or unit == "target") and 0.25) or (unit ~= "focus" and 0.5) or 0.33)
+    InverseGrowthDirectionToggle:SetRelativeWidth((unit == "player" or unit == "target") and 0.33 or 0.5)
     ColourContainer:AddChild(InverseGrowthDirectionToggle)
 
     if unit == "player" or unit == "target" then
@@ -704,6 +695,25 @@ local function CreateFrameSettings(containerParent, unit, unitHasParent, updateC
     BackgroundOpacitySlider:SetCallback("OnValueChanged", function(_, _, value) HealthBarDB.BackgroundOpacity = value updateCallback() end)
     BackgroundOpacitySlider:SetIsPercent(true)
     ColourContainer:AddChild(BackgroundOpacitySlider)
+
+    if unit == "player" or unit == "target" or unit == "focus" then
+        local DispelHighlightContainer = GUIWidgets.CreateInlineGroup(containerParent, "Dispel Highlighting")
+
+        local EnableDispelHighlightingToggle = AG:Create("CheckBox")
+        EnableDispelHighlightingToggle:SetLabel("Enable Dispel Highlighting")
+        EnableDispelHighlightingToggle:SetValue(HealthBarDB.DispelHighlight.Enabled)
+        EnableDispelHighlightingToggle:SetRelativeWidth(0.5)
+        EnableDispelHighlightingToggle:SetCallback("OnValueChanged", function(_, _, value) HealthBarDB.DispelHighlight.Enabled = value updateCallback() end)
+        DispelHighlightContainer:AddChild(EnableDispelHighlightingToggle)
+
+        local DispelHighlightStyleDropdown = AG:Create("Dropdown")
+        DispelHighlightStyleDropdown:SetList({["HEALTHBAR"] = "Health Bar", ["GRADIENT"] = "Gradient" })
+        DispelHighlightStyleDropdown:SetLabel("Highlight Style")
+        DispelHighlightStyleDropdown:SetValue(HealthBarDB.DispelHighlight.Style)
+        DispelHighlightStyleDropdown:SetRelativeWidth(0.5)
+        DispelHighlightStyleDropdown:SetCallback("OnValueChanged", function(_, _, value) HealthBarDB.DispelHighlight.Style = value updateCallback() end)
+        DispelHighlightContainer:AddChild(DispelHighlightStyleDropdown)
+    end
 end
 
 local function CreateHealPredictionSettings(containerParent, unit, updateCallback)
@@ -744,7 +754,7 @@ local function CreateHealPredictionSettings(containerParent, unit, updateCallbac
     AbsorbSettings:AddChild(AbsorbHeightSlider)
 
     local AbsorbPositionDropdown = AG:Create("Dropdown")
-    AbsorbPositionDropdown:SetList({["LEFT"] = "Left", ["RIGHT"] = "Right"})
+    AbsorbPositionDropdown:SetList({["LEFT"] = "Left", ["RIGHT"] = "Right", ["ATTACH"] = "Attach To Missing Health"}, {"LEFT", "RIGHT", "ATTACH"})
     AbsorbPositionDropdown:SetLabel("Position")
     AbsorbPositionDropdown:SetValue(HealPredictionDB.Absorbs.Position)
     AbsorbPositionDropdown:SetRelativeWidth(0.33)
@@ -784,7 +794,7 @@ local function CreateHealPredictionSettings(containerParent, unit, updateCallbac
     HealAbsorbSettings:AddChild(HealAbsorbHeightSlider)
 
     local HealAbsorbPositionDropdown = AG:Create("Dropdown")
-    HealAbsorbPositionDropdown:SetList({["LEFT"] = "Left", ["RIGHT"] = "Right"})
+    HealAbsorbPositionDropdown:SetList({["LEFT"] = "Left", ["RIGHT"] = "Right", ["ATTACH"] = "Attach To Missing Health"}, {"LEFT", "RIGHT", "ATTACH"})
     HealAbsorbPositionDropdown:SetLabel("Position")
     HealAbsorbPositionDropdown:SetValue(HealPredictionDB.HealAbsorbs.Position)
     HealAbsorbPositionDropdown:SetRelativeWidth(0.33)
@@ -2024,7 +2034,7 @@ local function CreateIndicatorSettings(containerParent, unit)
         elseif IndicatorTab == "TargetIndicator" then
             CreateTargetIndicatorSettings(IndicatorContainer, unit, function() if unit == "boss" then UUF:UpdateBossFrames() else UUF:UpdateUnitTargetGlowIndicator(UUF[unit:upper()], unit) end end)
         elseif IndicatorTab == "Totems" then
-            CreateTotemsIndicatorSettings(IndicatorContainer, unit, function() UUF:UpdateUnitTotems(UUF[unit:upper()], unit) end)
+            -- CreateTotemsIndicatorSettings(IndicatorContainer, unit, function() UUF:UpdateUnitTotems(UUF[unit:upper()], unit) end)
         end
     end
 
@@ -2038,7 +2048,7 @@ local function CreateIndicatorSettings(containerParent, unit)
             { text = "Resting", value = "Resting" },
             { text = "Combat", value = "Combat" },
             { text = "Mouseover", value = "Mouseover" },
-            { text = "Totems", value = "Totems" },
+            -- { text = "Totems", value = "Totems" },
         })
     elseif unit == "target" then
         IndicatorContainerTabGroup:SetTabs({
@@ -2590,7 +2600,7 @@ local function CreateGlobalSettings(containerParent)
 
     CreateFontSettings(GlobalContainer)
     CreateTextureSettings(GlobalContainer)
-    -- CreateRangeSettings(GlobalContainer)
+    CreateRangeSettings(GlobalContainer)
     CreateAuraDurationSettings(GlobalContainer)
 
     local TagContainer = GUIWidgets.CreateInlineGroup(GlobalContainer, "Tag Settings")
